@@ -1,69 +1,173 @@
 import tkinter
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter import *
 import openpyxl
 import os
 from openpyxl.utils.exceptions import InvalidFileException
+import datetime
 
-def get_info():
+custname = ''
+deliverytime = ''
+ordertype = ''
+deliveryperson = ''
+paidstatus = ''
+calc_price = 0
 
+def get_calc():
+    
     custname = cust_name_entry.get()
     deliverytime = deliverytime_entry.get()
-    #price = price_entry.get()
-    #price = float(price)
-    #price_f = "{:.2f}".format(price)
     ordertype = ordertype_combobox.get()
-    
     deliveryperson = deliveryperson_combobox.get()
     paidstatus = paid_status_var.get()
 
-    rice_quant = rice_spinbox.get()
-    rice_quant = int(rice_quant)
+    tiffin_quant = tiffin_spinbox.get()
+    tiffin_quant = float(tiffin_quant)
 
-    bhaji_quant = bhaji_spinbox.get()
-    bhaji_quant = int(bhaji_quant)
+    chapati_quant = chapati_spinbox.get()
+    chapati_quant = float(chapati_quant)
 
-    bhakri_quant = bhakari_spinbox.get()
-    bhakri_quant = int(bhakri_quant)
+    bhakari_quant = bhakari_spinbox.get()
+    bhakari_quant = float(bhakari_quant)
+
+    bhaji1_quant = bhaji1_spinbox.get()
+    bhaji1_quant = float(bhaji1_quant)
+
+    bhaji2_quant = bhaji2_spinbox.get()
+    bhaji2_quant = float(bhaji2_quant)
 
     varan_quant = varan_spinbox.get()
-    varan_quant = int(varan_quant)
+    varan_quant = float(varan_quant)
 
-    bhaji_type = bhaji_entry.get()
+    rice_quant = rice_spinbox.get()
+    rice_quant = float(rice_quant)
+
+    thepla_quant = thepla_spinbox.get()
+    thepla_quant = float(thepla_quant)
+
+    modak_quant = modak_spinbox.get()
+    modak_quant = float(modak_quant)
+
+    poli_quant = poli_spinbox.get()
+    poli_quant = float(poli_quant)
+
+
     bhakri_type = bhakri_entry.get()
+    bhaji1_type = bhaji1_entry.get()
+    bhaji2_type = bhaji2_entry.get()
+
+    order_details = (str(int(tiffin_quant)) + " Tiffin" + " | \n" + 
+                     str(int(chapati_quant)) + " Chapati" + " | \n" + 
+                     str(int(bhakari_quant)) + " " + str(bhakri_type) + " Bhakri" + " " + " | \n" +  
+                     str(int(bhaji1_quant)) + " " + str(bhaji1_type) + " Bhaji 1" + " " + " | \n" + 
+                     str(int(bhaji2_quant)) + " " + str(bhaji2_type) + " Bhaji 2" + " " + " | \n" + 
+                     str(int(varan_quant)) + " Varan" + " | \n" + 
+                     str(int(rice_quant)) + " Rice" + " | \n" )
+
+    order_details_thepla = str(int(thepla_quant))
+    order_details_modak = str(int(modak_quant))
+    order_details_poli = str(int(poli_quant))
+
+    #calculate total price
+    Tiffin_PerPlate = 50
+    Chapati_PerPlate = 10
+    Bhakri_PerPlate = 15
+    Bhaji1_PerPlate = 15
+    Bhaji2_PerPlate = 15
+    Varan_PerPlate = 20
+    Rice_PerPlate = 10
+    Thepla_PerPlate = 10
+    Modak_PerPlate = 10
+    Poli_PerPlate = 10
     
-    order_details = ("Rice: "+ str(rice_quant) + " | \n" + 
-                    "Bhaji: "+ str(bhaji_quant) + " " + str(bhaji_type) + " " + " | \n" + 
-                    "Bhakari: "+ str(bhakri_quant) + " " + str(bhakri_type) + " " + " | \n" +
-                    "Varan: "+ str(varan_quant) + " | \n" )
     
     #calculate total price
-    Rice_PerPlate = 10
-    Bhaji_PerPlate = 15
-    Varan_PerPlate = 20
-    Bhakri_PerPlate = 15
 
-    calc_price = rice_quant * float(Rice_PerPlate) + bhaji_quant * float(Bhaji_PerPlate) + bhakri_quant * float(Bhakri_PerPlate) + varan_quant * float(Varan_PerPlate)  
+    calc_price =    (tiffin_quant * float(Tiffin_PerPlate)) + \
+                    (chapati_quant * float(Chapati_PerPlate)) + \
+                    (bhakari_quant * float(Bhakri_PerPlate)) + \
+                    (bhaji1_quant * float(Bhaji1_PerPlate)) + \
+                    (bhaji2_quant * float(Bhaji2_PerPlate)) + \
+                    (varan_quant * float(Varan_PerPlate)) + \
+                    (rice_quant * float(Rice_PerPlate)) + \
+                    (thepla_quant * float(Thepla_PerPlate)) + \
+                    (modak_quant * float(Modak_PerPlate)) + \
+                    (poli_quant * float(Poli_PerPlate))
     
-    print(calc_price)
-    print(order_details)
+    list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype]
+    print(list1)
+    return list1
+         
+    print("inside calc ",scalc_price)
+
+    calc_price = tkinter.StringVar(value = calc_price)
+    price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price, font=("Roboto", 20, "bold"))
+    price_entry.grid(row=1,column=2)
+
+    
+#function ends-----------
+
+def get_info():
+
+    #price = price_entry.get()
+    #price = float(price)
+    #price_f = "{:.2f}".format(price)
+    list2 = get_calc()
+    custname = list2[5]
+    ordertype = list2[6]
     
     if custname:
         if ordertype:
-            filepath = "C:\\Users\\mhatr\\OneDrive\\Tkinter\\data.xlsx"      
+
+            today = datetime.date.today() 
+            filepath = "C:\\Users\\mhatr\\OneDrive\\Tkinter\\AkshayPatra_DailyOrders_" + str(today) + ".xlsx"   
+              
             if not os.path.exists(filepath):
                 workbook = openpyxl.Workbook()
                 sheet = workbook.active
                 heading = ["Customer Name", "Delivery Time", "Price", "Order Type", 
-                            "Payment Status", "Delivery Person", "Order Details"]
+                            "Payment Status", "Delivery Person", "Order Details", "Thepla", "Modak", "Poli"]
                 sheet.append(heading)
                 workbook.save(filepath)
                
             try: 
                 workbook = openpyxl.load_workbook(filepath)
                 sheet = workbook.active
-                sheet.append([custname, deliverytime, calc_price, ordertype, paidstatus, deliveryperson, order_details])
+                sheet.append([custname, deliverytime, list2[1], ordertype, paidstatus, deliveryperson, list2[0], list2[2], list2[3], list2[4]])
                 workbook.save(filepath)
+
+                ######################    clean window
+
+                cust_name_entry.delete(0,tkinter.END)
+                deliverytime_entry.delete(0,tkinter.END)
+                bhaji1_entry.delete(0,tkinter.END)
+                bhaji2_entry.delete(0,tkinter.END)
+                bhakri_entry.delete(0,tkinter.END)
+
+                #price_entry.se
+                calc_price = tkinter.StringVar(value = 0.0)
+                price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price)
+                price_entry.grid(row=1,column=2)
+                
+
+                ordertype_combobox.set('')
+                deliveryperson_combobox.set('')
+                
+                #clear spinboxes
+                reset_v = IntVar(window)
+                reset_v.set(0)
+                tiffin_spinbox.config(textvariable = reset_v)
+                chapati_spinbox.config(textvariable = reset_v)
+                bhakari_spinbox.config(textvariable = reset_v)
+                bhaji1_spinbox.config(textvariable = reset_v)
+                bhaji2_spinbox.config(textvariable = reset_v)
+                varan_spinbox.config(textvariable = reset_v)
+                rice_spinbox.config(textvariable = reset_v)
+                thepla_spinbox.config(textvariable = reset_v)
+                modak_spinbox.config(textvariable = reset_v)
+                poli_spinbox.config(textvariable = reset_v)
+
 
             except:
                 #print("Please Close Excel File !")
@@ -76,17 +180,14 @@ def get_info():
 
 #function ends-----------
 
-def get_calc():
-    pass
-
-
-#function ends-----------
 
 window = tkinter.Tk()
 window.title("Order Entry Form")
 frame = tkinter.Frame(window)
 frame.pack()
 
+reset_v = IntVar(window)
+reset_v.set(0)
 
 #frame 01: order details
 order_detail_frame = tkinter.LabelFrame(frame, text="Order Details")
@@ -159,35 +260,68 @@ menu_detail_frame.grid(row=2, column=0, sticky="news", padx=20, pady=10)
 quantity_label = tkinter.Label(menu_detail_frame, text="Quantity")
 quantity_label.grid(row=0, column=1)
 
-rice_label = tkinter.Label(menu_detail_frame, text="Rice")
-rice_label.grid(row=1, column=0)
-rice_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
-rice_spinbox.grid(row=1,column=1)
+tiffin_label = tkinter.Label(menu_detail_frame, text="Tiffin")
+tiffin_label.grid(row=1, column=0)
+tiffin_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
+tiffin_spinbox.grid(row=1,column=1)
 
-bhaji_label = tkinter.Label(menu_detail_frame, text="Bhaji")
-bhaji_label.grid(row=2, column=0)
-bhaji_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
-bhaji_spinbox.grid(row=2,column=1)
+chapati_label = tkinter.Label(menu_detail_frame, text="Chapati")
+chapati_label.grid(row=2, column=0)
+chapati_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
+chapati_spinbox.grid(row=2,column=1)
 
 bhakari_label = tkinter.Label(menu_detail_frame, text="Bhakari")
 bhakari_label.grid(row=3, column=0)
 bhakari_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
 bhakari_spinbox.grid(row=3,column=1)
 
+bhaji1_label = tkinter.Label(menu_detail_frame, text="Bhaji 1")
+bhaji1_label.grid(row=4, column=0)
+bhaji1_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
+bhaji1_spinbox.grid(row=4,column=1)
+
+bhaji2_label = tkinter.Label(menu_detail_frame, text="Bhaji 2")
+bhaji2_label.grid(row=5, column=0)
+bhaji2_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
+bhaji2_spinbox.grid(row=5,column=1)
+
 varan_label = tkinter.Label(menu_detail_frame, text="Varan")
-varan_label.grid(row=4, column=0)
+varan_label.grid(row=6, column=0)
 varan_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
-varan_spinbox.grid(row=4,column=1)
+varan_spinbox.grid(row=6,column=1)
+
+rice_label = tkinter.Label(menu_detail_frame, text="Rice")
+rice_label.grid(row=7, column=0)
+rice_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
+rice_spinbox.grid(row=7,column=1)
+
+thepla_label = tkinter.Label(menu_detail_frame, text="Thepla")
+thepla_label.grid(row=8, column=0)
+thepla_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
+thepla_spinbox.grid(row=8,column=1)
+
+modak_label = tkinter.Label(menu_detail_frame, text="Modak")
+modak_label.grid(row=9, column=0)
+modak_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
+modak_spinbox.grid(row=9,column=1)
+
+poli_label = tkinter.Label(menu_detail_frame, text="Puran Poli")
+poli_label.grid(row=10, column=0)
+poli_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
+poli_spinbox.grid(row=10,column=1)
 
 #types of menu
 type_label = tkinter.Label(menu_detail_frame, text="Type")
 type_label.grid(row=0, column=2)
 
-bhaji_entry = tkinter.Entry(menu_detail_frame)
-bhaji_entry.grid(row=2,column=2)
-
 bhakri_entry = tkinter.Entry(menu_detail_frame)
 bhakri_entry.grid(row=3,column=2)
+
+bhaji1_entry = tkinter.Entry(menu_detail_frame)
+bhaji1_entry.grid(row=4,column=2)
+
+bhaji2_entry = tkinter.Entry(menu_detail_frame)
+bhaji2_entry.grid(row=5,column=2)
 
 
 for widget in menu_detail_frame.winfo_children():
