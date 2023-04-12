@@ -82,7 +82,11 @@ def get_calc():
     Poli_PerPlate = 10
     
     
-    #calculate total price
+    #reset to zero
+    calc_price = 0.0
+    price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price,font=("Roboto", 20, "bold"), width=7)
+    price_entry.grid(row=1,column=2)
+    #print("reset",calc_price)
 
     calc_price =    (tiffin_quant * float(Tiffin_PerPlate)) + \
                     (chapati_quant * float(Chapati_PerPlate)) + \
@@ -96,16 +100,15 @@ def get_calc():
                     (poli_quant * float(Poli_PerPlate))
     
     list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype]
-    print(list1)
-    return list1
-         
-    print("inside calc ",scalc_price)
-
-    calc_price = tkinter.StringVar(value = calc_price)
-    price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price, font=("Roboto", 20, "bold"))
-    price_entry.grid(row=1,column=2)
 
     
+    
+    calc_price = tkinter.StringVar(value = calc_price)
+    price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price, font=("Roboto", 20, "bold"), width=7)
+    price_entry.grid(row=1,column=2)
+
+    return list1
+
 #function ends-----------
 
 def get_info():
@@ -114,8 +117,10 @@ def get_info():
     #price = float(price)
     #price_f = "{:.2f}".format(price)
     list2 = get_calc()
+    price_dec = list2[1]
     custname = list2[5]
     ordertype = list2[6]
+    orderdetails = list2[0]
     
     if custname:
         if ordertype:
@@ -134,7 +139,7 @@ def get_info():
             try: 
                 workbook = openpyxl.load_workbook(filepath)
                 sheet = workbook.active
-                sheet.append([custname, deliverytime, list2[1], ordertype, paidstatus, deliveryperson, list2[0], list2[2], list2[3], list2[4]])
+                sheet.append([custname, deliverytime, str(price_dec), ordertype, paidstatus, deliveryperson, orderdetails, list2[2], list2[3], list2[4]])
                 workbook.save(filepath)
 
                 ######################    clean window
@@ -145,28 +150,48 @@ def get_info():
                 bhaji2_entry.delete(0,tkinter.END)
                 bhakri_entry.delete(0,tkinter.END)
 
-                #price_entry.se
-                calc_price = tkinter.StringVar(value = 0.0)
-                price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price)
-                price_entry.grid(row=1,column=2)
                 
+                calc_price = 0.0
+                price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price,font=("Roboto", 20, "bold"), width=7)
+                price_entry.grid(row=1,column=2)
+    
+                print("i am here")
 
                 ordertype_combobox.set('')
                 deliveryperson_combobox.set('')
-                
+                amountpaid_check.deselect()
+
                 #clear spinboxes
                 reset_v = IntVar(window)
                 reset_v.set(0)
                 tiffin_spinbox.config(textvariable = reset_v)
-                chapati_spinbox.config(textvariable = reset_v)
-                bhakari_spinbox.config(textvariable = reset_v)
-                bhaji1_spinbox.config(textvariable = reset_v)
-                bhaji2_spinbox.config(textvariable = reset_v)
-                varan_spinbox.config(textvariable = reset_v)
-                rice_spinbox.config(textvariable = reset_v)
-                thepla_spinbox.config(textvariable = reset_v)
-                modak_spinbox.config(textvariable = reset_v)
-                poli_spinbox.config(textvariable = reset_v)
+                reset_v1 = IntVar(window)
+                reset_v1.set(0)
+                chapati_spinbox.config(textvariable = reset_v1)
+                reset_v2 = IntVar(window)
+                reset_v2.set(0)
+                bhakari_spinbox.config(textvariable = reset_v2)
+                reset_v3 = IntVar(window)
+                reset_v3.set(0)
+                bhaji1_spinbox.config(textvariable = reset_v3)
+                reset_v4 = IntVar(window)
+                reset_v4.set(0)
+                bhaji2_spinbox.config(textvariable = reset_v4)
+                reset_v5 = IntVar(window)
+                reset_v5.set(0)
+                varan_spinbox.config(textvariable = reset_v5)
+                reset_v6 = IntVar(window)
+                reset_v6.set(0)
+                rice_spinbox.config(textvariable = reset_v6)
+                reset_v7 = IntVar(window)
+                reset_v7.set(0)
+                thepla_spinbox.config(textvariable = reset_v7)
+                reset_v8 = IntVar(window)
+                reset_v8.set(0)
+                modak_spinbox.config(textvariable = reset_v8)
+                reset_v9 = IntVar(window)
+                reset_v9.set(0)
+                poli_spinbox.config(textvariable = reset_v9)
 
 
             except:
@@ -203,13 +228,14 @@ cust_name_entry.grid(row=1,column=0)
 deliverytime_label = tkinter.Label(order_detail_frame, text="Delivery Time")
 deliverytime_label.grid(row=0, column=1)
 deliverytime_entry = tkinter.Entry(order_detail_frame)
+#deliverytime_entry = ttk.TimeEntry(order_detail_frame, width=12, format='HH:mm:ss')
 deliverytime_entry.grid(row=1,column=1)
 
 #save total order price
 price_label = tkinter.Label(order_detail_frame, text="Total Price")
 price_label.grid(row=0, column=2)
 calc_price = tkinter.StringVar(value = 0.0)
-price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price)
+price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price,font=("Roboto", 20, "bold"), width=7)
 price_entry.grid(row=1,column=2)
 
 #check if delivery or takeaway
