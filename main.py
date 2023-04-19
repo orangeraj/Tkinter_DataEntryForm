@@ -138,7 +138,10 @@ def get_info():
             if calc_count > 1:    
                 #get date
                 today = datetime.date.today() 
-                filepath = "C:\\Users\\mhatr\\OneDrive\\Tkinter\\AkshayPatra_DailyOrders_" + str(today) + ".xlsx"   
+                #filepath = "C:\\Users\\mhatr\\OneDrive\\Tkinter\\AkshayPatra_DailyOrders_" + str(today) + ".xlsx"   
+                filename = "AkshayPatra_DailyOrders_" + str(today) + ".xlsx"   
+                user_dir = os.path.expanduser('~')
+                filepath = os.path.join(user_dir, filename)
                 
                 #if file is not present then create new file
                 if not os.path.exists(filepath):
