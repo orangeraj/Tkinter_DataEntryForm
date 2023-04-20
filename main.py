@@ -15,6 +15,7 @@ ordertype = ''
 deliveryperson = ''
 paidstatus = ''
 calc_price = 0
+global calc_count
 calc_count  = 0
 print("global", calc_count)
 #function to calculate total price
@@ -104,9 +105,10 @@ def get_calc():
                     (poli_quant * float(Poli_PerPlate))
     
     #creating list to return to get_info function
-    global calc_count 
+    #global calc_count 
+    global calc_count
     calc_count += 1
-    print("calc ",calc_count)
+    print("inside calc ",calc_count)
     list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype, calc_count]
 
     #displaying calcuated value on GUI
@@ -125,13 +127,15 @@ def get_info():
     #price_f = "{:.2f}".format(price)
 
     #fetching values from get_calc function
+    global calc_count
     list2 = get_calc()
     price_dec = list2[1]
     custname = list2[5]
     ordertype = list2[6]
     orderdetails = list2[0]
-    calc_count = list2[7]
+    #calc_count = list2[7]
     print("flag inside info ", calc_count)
+    
     #valition for mandatory fields > custname and ordertype
     if custname:
         if ordertype:
@@ -216,6 +220,9 @@ def get_info():
                     reset_v9.set(0)
                     poli_spinbox.config(textvariable = reset_v9)
 
+                    #reset counter
+                    calc_count = 0
+                    print("ending", calc_count)
 
                 except:
                     tkinter.messagebox.showwarning(title="ERROR !", message="Please Close Excel File or Check for other errors")
