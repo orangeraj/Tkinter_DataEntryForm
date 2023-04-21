@@ -7,6 +7,8 @@ import os
 from openpyxl.utils.exceptions import InvalidFileException
 import datetime
 from openpyxl.styles import PatternFill
+from openpyxl.styles import Font
+from openpyxl import Workbook
 
 #global variables
 custname = ''
@@ -17,7 +19,7 @@ paidstatus = ''
 calc_price = 0
 global calc_count
 calc_count  = 0
-print("global", calc_count)
+#print("global", calc_count)
 #function to calculate total price
 def get_calc():
     
@@ -27,6 +29,7 @@ def get_calc():
     ordertype = ordertype_combobox.get()
     deliveryperson = deliveryperson_combobox.get()
     paidstatus = paid_status_var.get()
+    #print("paid status", paidstatus)
 
     tiffin_quant = tiffin_spinbox.get()
     tiffin_quant = float(tiffin_quant)
@@ -108,8 +111,8 @@ def get_calc():
     #global calc_count 
     global calc_count
     calc_count += 1
-    print("inside calc ",calc_count)
-    list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype, calc_count]
+    #print("inside calc ",calc_count)
+    list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype, calc_count, paidstatus]
 
     #displaying calcuated value on GUI
     calc_price = tkinter.StringVar(value = calc_price)
@@ -133,8 +136,10 @@ def get_info():
     custname = list2[5]
     ordertype = list2[6]
     orderdetails = list2[0]
+    paidstatus = list2[8]
+    #print(paidornot)
     #calc_count = list2[7]
-    print("flag inside info ", calc_count)
+    #print("flag inside info ", calc_count)
     
     #valition for mandatory fields > custname and ordertype
     if custname:
@@ -151,7 +156,7 @@ def get_info():
                 if not os.path.exists(filepath):
                     workbook = openpyxl.Workbook()
                     sheet = workbook.active
-                    heading = ["Order No", "Customer Name", "Delivery Time", "Price", "Order Type", 
+                    heading = ["Customer Name", "Delivery Time", "Price", "Order Type", 
                                 "Payment Status", "Delivery Person", "Order Details", "Thepla", "Modak", "Poli"]
                     sheet.append(heading)
                     
@@ -159,7 +164,7 @@ def get_info():
                     for rows in sheet.iter_rows(min_row=1, max_row=1, min_col=1):
                         for cell in rows:
                             cell.fill = PatternFill(start_color='FFC000', end_color='FFC000', fill_type='solid')
-                    
+
                     order_no = 1
                     workbook.save(filepath)
                 
@@ -170,8 +175,18 @@ def get_info():
                     #get latest order no
 
                     sheet.append([custname, deliverytime, str(price_dec), ordertype, paidstatus, deliveryperson, orderdetails, list2[2], list2[3], list2[4]])
-                    workbook.save(filepath)
+                    
+                    #highlight paid transactions
+                    #bold_font = Font(bold=True)
+                    fill = PatternFill(start_color='37eded', end_color='37eded', fill_type='solid')
+                    
+                    for row in sheet.iter_rows(min_row=2): # skip the header row
+                        #print("paidstatus value", row[4].value)
+                        if row[4].value == "Paid": # column 4 is the "paidstatus" column
+                            for cell in row:
+                                cell.fill = fill
 
+                    workbook.save(filepath)
                     #clean window after submit button is clicked
 
                     cust_name_entry.delete(0,tkinter.END)
@@ -222,7 +237,7 @@ def get_info():
 
                     #reset counter
                     calc_count = 0
-                    print("ending", calc_count)
+                    #print("ending", calc_count)
 
                 except:
                     tkinter.messagebox.showwarning(title="ERROR !", message="Please Close Excel File or Check for other errors")
