@@ -176,8 +176,24 @@ def get_info():
                     sheet = workbook.active
                     
                     #separate morning and evening orders
-                    blank_list = []
-                    sheet.append(blank_list)
+                    # Check if the current time is after 2 pm
+
+                    current_time = datetime.datetime.now().time()
+                    if current_time >= datetime.time(hour=15):
+
+                        # Check if a blank row has already been inserted
+                        row_inserted = False
+                        for row in sheet.iter_rows():
+                            if all(cell.value is None for cell in row):
+                                row_inserted = True
+                                break
+
+                    #print(row_inserted) 
+                    # If a blank row has not been inserted, insert one
+                    if not row_inserted:
+                        blank_list = []
+                        sheet.append(blank_list)
+                        #print("blank row inserted")
                     
                     sheet.append([custname, deliverytime, str(price_dec), ordertype, paidstatus, deliveryperson, orderdetails, list2[2], list2[3], list2[4]])
                     
