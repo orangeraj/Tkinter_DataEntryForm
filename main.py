@@ -78,6 +78,13 @@ def get_calc():
     order_details_modak = str(int(modak_quant))
     order_details_poli = str(int(poli_quant))
 
+    #Get Prices from admin datasheet
+    price_filepath = "ADMIN_PRICE.xlsx"
+    wb = openpyxl.load_workbook(price_filepath)
+    ws = wb.active
+    cell_value = ws.cell(row=1, column =1).value
+    print(cell_value)
+
     #calculate total price
     Tiffin_PerPlate = 50
     Chapati_PerPlate = 10
