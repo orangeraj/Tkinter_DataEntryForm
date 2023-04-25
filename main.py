@@ -8,7 +8,7 @@ from openpyxl.utils.exceptions import InvalidFileException
 import datetime
 from openpyxl.styles import PatternFill
 from openpyxl.styles import Font
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 
 #global variables
 custname = ''
@@ -112,7 +112,8 @@ def get_calc():
     global calc_count
     calc_count += 1
     #print("inside calc ",calc_count)
-    list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype, calc_count, paidstatus]
+    list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype, calc_count,
+             paidstatus, deliverytime, deliveryperson]
 
     #displaying calcuated value on GUI
     calc_price = tkinter.StringVar(value = calc_price)
@@ -137,6 +138,8 @@ def get_info():
     ordertype = list2[6]
     orderdetails = list2[0]
     paidstatus = list2[8]
+    deliverytime = list2[9]
+    deliveryperson = list2[10]
     #print(paidornot)
     #calc_count = list2[7]
     #print("flag inside info ", calc_count)
@@ -163,7 +166,7 @@ def get_info():
                     #color the header
                     for rows in sheet.iter_rows(min_row=1, max_row=1, min_col=1):
                         for cell in rows:
-                            cell.fill = PatternFill(start_color='FFC000', end_color='FFC000', fill_type='solid')
+                            cell.fill = PatternFill(start_color='ADD8E6', end_color='ADD8E6', fill_type='solid')
 
                     order_no = 1
                     workbook.save(filepath)
@@ -172,19 +175,22 @@ def get_info():
                     workbook = openpyxl.load_workbook(filepath)
                     sheet = workbook.active
                     
-                    #get latest order no
-
+                    #separate morning and evening orders
+                    blank_list = []
+                    sheet.append(blank_list)
+                    
                     sheet.append([custname, deliverytime, str(price_dec), ordertype, paidstatus, deliveryperson, orderdetails, list2[2], list2[3], list2[4]])
                     
                     #highlight paid transactions
                     #bold_font = Font(bold=True)
-                    fill = PatternFill(start_color='37eded', end_color='37eded', fill_type='solid')
+                    fill = PatternFill(start_color='90EE90', end_color='90EE90', fill_type='solid')
                     
                     for row in sheet.iter_rows(min_row=2): # skip the header row
                         #print("paidstatus value", row[4].value)
                         if row[4].value == "Paid": # column 4 is the "paidstatus" column
                             for cell in row:
                                 cell.fill = fill
+
 
                     workbook.save(filepath)
                     #clean window after submit button is clicked
