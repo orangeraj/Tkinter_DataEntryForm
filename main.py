@@ -193,8 +193,12 @@ def get_info():
                     if not row_inserted:
                         blank_list = []
                         sheet.append(blank_list)
+                        sheet.append(blank_list)
                         #print("blank row inserted")
                     
+                    if not deliverytime:
+                        deliverytime = current_time.strftime('%I:%M %p')
+
                     sheet.append([custname, deliverytime, str(price_dec), ordertype, paidstatus, deliveryperson, orderdetails, list2[2], list2[3], list2[4]])
                     
                     #highlight paid transactions
