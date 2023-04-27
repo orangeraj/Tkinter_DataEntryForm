@@ -29,7 +29,16 @@ def get_calc():
     ordertype = ordertype_combobox.get()
     deliveryperson = deliveryperson_combobox.get()
     paidstatus = paid_status_var.get()
+    halftiffin = halftiffin_var.get()
+    halfbhaji1 = halfbhaji1_var.get()
+    halfbhaji2 = halfbhaji2_var.get()
+    halfvaran = halfvaran_var.get()
+    halfrice = halfrice_var.get()
+
+    print(halftiffin, halfbhaji1, halfbhaji2, halfvaran, halfrice)
     #print("paid status", paidstatus)
+
+
 
     tiffin_quant = tiffin_spinbox.get()
     tiffin_quant = float(tiffin_quant)
@@ -89,18 +98,47 @@ def get_calc():
 
     #calculate total price
     
-    Tiffin_PerPlate = ws.cell(row=2, column =2).value
+    #consider half checkbox
+
+    if halftiffin == 'Half':
+        Tiffin_PerPlate = ws.cell(row=2, column =3).value
+    else:
+        Tiffin_PerPlate = ws.cell(row=2, column =2).value
+
+
+    if halfbhaji1 == 'Half':
+        Bhaji1_PerPlate = ws.cell(row=5, column =3).value
+    else:
+        Bhaji1_PerPlate = ws.cell(row=5, column =2).value
+
+
+    if halfbhaji2 == 'Half':
+        Bhaji2_PerPlate = ws.cell(row=6, column =3).value
+    else:
+        Bhaji2_PerPlate = ws.cell(row=6, column =2).value
+
+
+    if halfvaran == 'Half':
+        Varan_PerPlate = ws.cell(row=7, column =3).value
+    else:
+        Varan_PerPlate = ws.cell(row=7, column =2).value
+
+
+    if halfrice == 'Half':
+        Rice_PerPlate = ws.cell(row=8, column =3).value
+    else:
+        Rice_PerPlate = ws.cell(row=8, column =2).value
+
+
     Chapati_PerPlate = ws.cell(row=3, column =2).value
     Bhakri_PerPlate = ws.cell(row=4, column =2).value
-    Bhaji1_PerPlate = ws.cell(row=5, column =2).value
-    Bhaji2_PerPlate = ws.cell(row=6, column =2).value
-    Varan_PerPlate = ws.cell(row=7, column =2).value
-    Rice_PerPlate = ws.cell(row=8, column =2).value
     Thepla_PerPlate = ws.cell(row=9, column =2).value
     Modak_PerPlate = ws.cell(row=10, column =2).value
     Poli_PerPlate = ws.cell(row=11, column =2).value
     
-    
+    print(Tiffin_PerPlate, Bhaji1_PerPlate, Bhaji2_PerPlate, Varan_PerPlate, Rice_PerPlate)
+
+
 
     #reset to zero for next calculation
     calc_price = 0.0
@@ -420,18 +458,46 @@ poli_label.grid(row=10, column=0)
 poli_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
 poli_spinbox.grid(row=10,column=1)
 
-#types of menu
-type_label = tkinter.Label(menu_detail_frame, text="Type")
+
+
+#half prices
+type_label = tkinter.Label(menu_detail_frame, text="Half")
 type_label.grid(row=0, column=2)
 
+halftiffin_var = tkinter.StringVar(value="Full")
+halftiffin_check = tkinter.Checkbutton(menu_detail_frame, text="", variable=halftiffin_var, onvalue="Half", offvalue="Full")
+halftiffin_check.grid(row=1, column=2)
+
+halfbhaji1_var = tkinter.StringVar(value="Full")
+halfbhaji1_check = tkinter.Checkbutton(menu_detail_frame, text="", variable=halfbhaji1_var, onvalue="Half", offvalue="Full")
+halfbhaji1_check.grid(row=4, column=2)
+
+halfbhaji2_var = tkinter.StringVar(value="Full")
+halfbhaji2_check = tkinter.Checkbutton(menu_detail_frame, text="", variable=halfbhaji2_var, onvalue="Half", offvalue="Full")
+halfbhaji2_check.grid(row=5, column=2)
+
+halfvaran_var = tkinter.StringVar(value="Full")
+halfvaran_check = tkinter.Checkbutton(menu_detail_frame, text="", variable=halfvaran_var, onvalue="Half", offvalue="Full")
+halfvaran_check.grid(row=6, column=2)
+
+halfrice_var = tkinter.StringVar(value="Full")
+halfrice_check = tkinter.Checkbutton(menu_detail_frame, text="", variable=halfrice_var, onvalue="Half", offvalue="Full")
+halfrice_check.grid(row=7, column=2)
+
+
+
+#types of menu
+type_label = tkinter.Label(menu_detail_frame, text="Type")
+type_label.grid(row=0, column=3)
+
 bhakri_entry = tkinter.Entry(menu_detail_frame)
-bhakri_entry.grid(row=3,column=2)
+bhakri_entry.grid(row=3,column=3)
 
 bhaji1_entry = tkinter.Entry(menu_detail_frame)
-bhaji1_entry.grid(row=4,column=2)
+bhaji1_entry.grid(row=4,column=3)
 
 bhaji2_entry = tkinter.Entry(menu_detail_frame)
-bhaji2_entry.grid(row=5,column=2)
+bhaji2_entry.grid(row=5,column=3)
 
 #adding padding for all the widgets inside frame 
 for widget in menu_detail_frame.winfo_children():
