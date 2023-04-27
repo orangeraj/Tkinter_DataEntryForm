@@ -19,6 +19,7 @@ paidstatus = ''
 calc_price = 0
 global calc_count
 calc_count  = 0
+#row_inserted = False
 #print("global", calc_count)
 #function to calculate total price
 def get_calc():
@@ -35,7 +36,7 @@ def get_calc():
     halfvaran = halfvaran_var.get()
     halfrice = halfrice_var.get()
 
-    print(halftiffin, halfbhaji1, halfbhaji2, halfvaran, halfrice)
+    #print(halftiffin, halfbhaji1, halfbhaji2, halfvaran, halfrice)
     #print("paid status", paidstatus)
 
 
@@ -75,13 +76,13 @@ def get_calc():
     bhaji2_type = bhaji2_entry.get()
 
     #concatenating values for order details 
-    order_details = (str(tiffin_quant) + " Tiffin" + " | \n" + 
-                     str(chapati_quant) + " Chapati" + " | \n" + 
-                     str(bhakari_quant) + " " + str(bhakri_type) + " Bhakri" + " " + " | \n" +  
-                     str(bhaji1_quant) + " " + str(bhaji1_type) + " Bhaji 1" + " " + " | \n" + 
-                     str(bhaji2_quant) + " " + str(bhaji2_type) + " Bhaji 2" + " " + " | \n" + 
-                     str(varan_quant) + " Varan" + " | \n" + 
-                     str(rice_quant) + " Rice" + " | \n" )
+    order_details = (str(int(tiffin_quant)) + " Tiffin" + " | \n" + 
+                     str(int(chapati_quant)) + " Chapati" + " | \n" + 
+                     str(int(bhakari_quant)) + " " + str(bhakri_type) + " Bhakri" + " " + " | \n" +  
+                     str(int(bhaji1_quant)) + " " + str(bhaji1_type) + " Bhaji 1" + " " + " | \n" + 
+                     str(int(bhaji2_quant)) + " " + str(bhaji2_type) + " Bhaji 2" + " " + " | \n" + 
+                     str(int(varan_quant)) + " Varan" + " | \n" + 
+                     str(int(rice_quant)) + " Rice" + " | \n" )
 
     order_details_thepla = str(int(thepla_quant))
     order_details_modak = str(int(modak_quant))
@@ -90,89 +91,147 @@ def get_calc():
 
     #Get Prices from admin datasheet
     price_filepath = "ADMIN_PRICE.xlsx"
-    wb = openpyxl.load_workbook(price_filepath)
-    ws = wb.active
-    #cell_value = ws.cell(row=1, column =1).value
-    #print(cell_value)
-
-
-    #calculate total price
     
-    #consider half checkbox
+    try:
 
-    if halftiffin == 'Half':
-        Tiffin_PerPlate = ws.cell(row=2, column =3).value
-    else:
-        Tiffin_PerPlate = ws.cell(row=2, column =2).value
+        wb = openpyxl.load_workbook(price_filepath)
+        ws = wb.active
+        #cell_value = ws.cell(row=1, column =1).value
+        #print(cell_value)
+        #calculate total price
+        #consider half checkbox
 
-
-    if halfbhaji1 == 'Half':
-        Bhaji1_PerPlate = ws.cell(row=5, column =3).value
-    else:
-        Bhaji1_PerPlate = ws.cell(row=5, column =2).value
-
-
-    if halfbhaji2 == 'Half':
-        Bhaji2_PerPlate = ws.cell(row=6, column =3).value
-    else:
-        Bhaji2_PerPlate = ws.cell(row=6, column =2).value
+        if halftiffin == 'Half':
+            Tiffin_PerPlate = ws.cell(row=2, column =3).value
+        else:
+            Tiffin_PerPlate = ws.cell(row=2, column =2).value
 
 
-    if halfvaran == 'Half':
-        Varan_PerPlate = ws.cell(row=7, column =3).value
-    else:
-        Varan_PerPlate = ws.cell(row=7, column =2).value
+        if halfbhaji1 == 'Half':
+            Bhaji1_PerPlate = ws.cell(row=5, column =3).value
+        else:
+            Bhaji1_PerPlate = ws.cell(row=5, column =2).value
 
 
-    if halfrice == 'Half':
-        Rice_PerPlate = ws.cell(row=8, column =3).value
-    else:
-        Rice_PerPlate = ws.cell(row=8, column =2).value
+        if halfbhaji2 == 'Half':
+            Bhaji2_PerPlate = ws.cell(row=6, column =3).value
+        else:
+            Bhaji2_PerPlate = ws.cell(row=6, column =2).value
 
 
-    Chapati_PerPlate = ws.cell(row=3, column =2).value
-    Bhakri_PerPlate = ws.cell(row=4, column =2).value
-    Thepla_PerPlate = ws.cell(row=9, column =2).value
-    Modak_PerPlate = ws.cell(row=10, column =2).value
-    Poli_PerPlate = ws.cell(row=11, column =2).value
+        if halfvaran == 'Half':
+            Varan_PerPlate = ws.cell(row=7, column =3).value
+        else:
+            Varan_PerPlate = ws.cell(row=7, column =2).value
+
+
+        if halfrice == 'Half':
+            Rice_PerPlate = ws.cell(row=8, column =3).value
+        else:
+            Rice_PerPlate = ws.cell(row=8, column =2).value
+
+
+        Chapati_PerPlate = ws.cell(row=3, column =2).value
+        Bhakri_PerPlate = ws.cell(row=4, column =2).value
+        Thepla_PerPlate = ws.cell(row=9, column =2).value
+        Modak_PerPlate = ws.cell(row=10, column =2).value
+        Poli_PerPlate = ws.cell(row=11, column =2).value
     
-    print(Tiffin_PerPlate, Bhaji1_PerPlate, Bhaji2_PerPlate, Varan_PerPlate, Rice_PerPlate)
+
+        #print(Tiffin_PerPlate, Bhaji1_PerPlate, Bhaji2_PerPlate, Varan_PerPlate, Rice_PerPlate)
+
+        #reset to zero for next calculation
+        calc_price = 0.0
+        price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price,font=("Roboto", 20, "bold"), width=7)
+        price_entry.grid(row=1,column=2)
+        
+        #formula to calculate total price of order
+        calc_price =    (tiffin_quant * float(Tiffin_PerPlate)) + \
+                        (chapati_quant * float(Chapati_PerPlate)) + \
+                        (bhakari_quant * float(Bhakri_PerPlate)) + \
+                        (bhaji1_quant * float(Bhaji1_PerPlate)) + \
+                        (bhaji2_quant * float(Bhaji2_PerPlate)) + \
+                        (varan_quant * float(Varan_PerPlate)) + \
+                        (rice_quant * float(Rice_PerPlate)) + \
+                        (thepla_quant * float(Thepla_PerPlate)) + \
+                        (modak_quant * float(Modak_PerPlate)) + \
+                        (poli_quant * float(Poli_PerPlate))
+        
+        #creating list to return to get_info function
+        #global calc_count 
+        global calc_count
+        calc_count += 1
+        #print("inside calc ",calc_count)
+        list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype, calc_count,
+                paidstatus, deliverytime, deliveryperson]
+
+        #displaying calcuated value on GUI
+        calc_price = tkinter.StringVar(value = calc_price)
+        price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price, font=("Roboto", 20, "bold"), width=7)
+        price_entry.grid(row=1,column=2)
+
+        wb.save(price_filepath)
+    except:
+        messagebox.showwarning(title="ERROR !", message="Please Close ADMIN PRICE Excel File")
+    
+    return list1
 
 
+def Clear_Window():
 
-    #reset to zero for next calculation
+    #clean window after submit button is clicked
+
+    cust_name_entry.delete(0,tkinter.END)
+    deliverytime_entry.delete(0,tkinter.END)
+    bhaji1_entry.delete(0,tkinter.END)
+    bhaji2_entry.delete(0,tkinter.END)
+    bhakri_entry.delete(0,tkinter.END)
+
     calc_price = 0.0
     price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price,font=("Roboto", 20, "bold"), width=7)
     price_entry.grid(row=1,column=2)
-    
-    #formula to calculate total price of order
-    calc_price =    (tiffin_quant * float(Tiffin_PerPlate)) + \
-                    (chapati_quant * float(Chapati_PerPlate)) + \
-                    (bhakari_quant * float(Bhakri_PerPlate)) + \
-                    (bhaji1_quant * float(Bhaji1_PerPlate)) + \
-                    (bhaji2_quant * float(Bhaji2_PerPlate)) + \
-                    (varan_quant * float(Varan_PerPlate)) + \
-                    (rice_quant * float(Rice_PerPlate)) + \
-                    (thepla_quant * float(Thepla_PerPlate)) + \
-                    (modak_quant * float(Modak_PerPlate)) + \
-                    (poli_quant * float(Poli_PerPlate))
-    
-    #creating list to return to get_info function
-    #global calc_count 
-    global calc_count
-    calc_count += 1
-    #print("inside calc ",calc_count)
-    list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype, calc_count,
-             paidstatus, deliverytime, deliveryperson]
 
-    #displaying calcuated value on GUI
-    calc_price = tkinter.StringVar(value = calc_price)
-    price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price, font=("Roboto", 20, "bold"), width=7)
-    price_entry.grid(row=1,column=2)
+    ordertype_combobox.set('')
+    deliveryperson_combobox.set('')
+    amountpaid_check.deselect()
+    halftiffin_check.deselect()
+    halfbhaji1_check.deselect()
+    halfbhaji2_check.deselect()
+    halfvaran_check.deselect()
+    halfrice_check.deselect()
 
-    wb.save(price_filepath)
-    return list1
+    reset_v = IntVar(window)
+    reset_v.set(0)
+    tiffin_spinbox.config(textvariable = reset_v)
+    reset_v1 = IntVar(window)
+    reset_v1.set(0)
+    chapati_spinbox.config(textvariable = reset_v1)
+    reset_v2 = IntVar(window)
+    reset_v2.set(0)
+    bhakari_spinbox.config(textvariable = reset_v2)
+    reset_v3 = IntVar(window)
+    reset_v3.set(0)
+    bhaji1_spinbox.config(textvariable = reset_v3)
+    reset_v4 = IntVar(window)
+    reset_v4.set(0)
+    bhaji2_spinbox.config(textvariable = reset_v4)
+    reset_v5 = IntVar(window)
+    reset_v5.set(0)
+    varan_spinbox.config(textvariable = reset_v5)
+    reset_v6 = IntVar(window)
+    reset_v6.set(0)
+    rice_spinbox.config(textvariable = reset_v6)
+    reset_v7 = IntVar(window)
+    reset_v7.set(0)
+    thepla_spinbox.config(textvariable = reset_v7)
+    reset_v8 = IntVar(window)
+    reset_v8.set(0)
+    modak_spinbox.config(textvariable = reset_v8)
+    reset_v9 = IntVar(window)
+    reset_v9.set(0)
+    poli_spinbox.config(textvariable = reset_v9)    
 
+    print("inside clear window")
 
 #function to save everything into excel
 def get_info():
@@ -191,6 +250,8 @@ def get_info():
     paidstatus = list2[8]
     deliverytime = list2[9]
     deliveryperson = list2[10]
+
+    blankrow_inserted = None
     #print(paidornot)
     #calc_count = list2[7]
     #print("flag inside info ", calc_count)
@@ -228,21 +289,27 @@ def get_info():
                     
                     #separate morning and evening orders
                     # Check if the current time is after 2 pm
-
+                    print("inside get info")
                     current_time = datetime.datetime.now().time()
-                    if current_time >= datetime.time(hour=15):
-
+                    print(current_time)
+                    print(datetime.time(hour=15))
+                    
+                    if current_time >= datetime.time(hour=1):
+                        print("it's par 3 Oclk")
                         # Check if a blank row has already been inserted
-                        row_inserted = False
+                        blankrow_inserted = False
                         for row in sheet.iter_rows():
                             if all(cell.value is None for cell in row):
-                                row_inserted = True
+                                blankrow_inserted = True
                                 break
 
+                    
+                    print("outside")
                     #print(row_inserted) 
                     # If a blank row has not been inserted, insert one
-                    if not row_inserted:
+                    if blankrow_inserted == False:
                         blank_list = []
+                        print("blank row inserted")
                         sheet.append(blank_list)
                         sheet.append(blank_list)
                         #print("blank row inserted")
@@ -262,68 +329,22 @@ def get_info():
                             for cell in row:
                                 cell.fill = fill
 
-
+                    print("inside submit2")
                     workbook.save(filepath)
-                    #clean window after submit button is clicked
-
-                    cust_name_entry.delete(0,tkinter.END)
-                    deliverytime_entry.delete(0,tkinter.END)
-                    bhaji1_entry.delete(0,tkinter.END)
-                    bhaji2_entry.delete(0,tkinter.END)
-                    bhakri_entry.delete(0,tkinter.END)
-
-                    calc_price = 0.0
-                    price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price,font=("Roboto", 20, "bold"), width=7)
-                    price_entry.grid(row=1,column=2)
-        
-                    ordertype_combobox.set('')
-                    deliveryperson_combobox.set('')
-                    amountpaid_check.deselect()
-
-                    #clear spinboxes
-                    reset_v = IntVar(window)
-                    reset_v.set(0)
-                    tiffin_spinbox.config(textvariable = reset_v)
-                    reset_v1 = IntVar(window)
-                    reset_v1.set(0)
-                    chapati_spinbox.config(textvariable = reset_v1)
-                    reset_v2 = IntVar(window)
-                    reset_v2.set(0)
-                    bhakari_spinbox.config(textvariable = reset_v2)
-                    reset_v3 = IntVar(window)
-                    reset_v3.set(0)
-                    bhaji1_spinbox.config(textvariable = reset_v3)
-                    reset_v4 = IntVar(window)
-                    reset_v4.set(0)
-                    bhaji2_spinbox.config(textvariable = reset_v4)
-                    reset_v5 = IntVar(window)
-                    reset_v5.set(0)
-                    varan_spinbox.config(textvariable = reset_v5)
-                    reset_v6 = IntVar(window)
-                    reset_v6.set(0)
-                    rice_spinbox.config(textvariable = reset_v6)
-                    reset_v7 = IntVar(window)
-                    reset_v7.set(0)
-                    thepla_spinbox.config(textvariable = reset_v7)
-                    reset_v8 = IntVar(window)
-                    reset_v8.set(0)
-                    modak_spinbox.config(textvariable = reset_v8)
-                    reset_v9 = IntVar(window)
-                    reset_v9.set(0)
-                    poli_spinbox.config(textvariable = reset_v9)
-
                     #reset counter
                     calc_count = 0
                     #print("ending", calc_count)
+                    Clear_Window()
 
                 except:
-                    tkinter.messagebox.showwarning(title="ERROR !", message="Please Close Excel File or Check for other errors")
+                    tkinter.messagebox.showwarning(title="ERROR !", message="Please Close Akshaypatra Excel File")
             else:
                 tkinter.messagebox.showwarning(title="ERROR !", message="Calculate first")
         else: 
             tkinter.messagebox.showwarning(title="ERROR !", message="Order Type missing")
     else:
         tkinter.messagebox.showwarning(title="ERROR !", message="Customer Name missing")
+
 
 
 #Tkinter GUI code
