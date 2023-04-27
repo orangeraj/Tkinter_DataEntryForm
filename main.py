@@ -294,7 +294,7 @@ def get_info():
                     print(current_time)
                     print(datetime.time(hour=15))
                     
-                    if current_time >= datetime.time(hour=1):
+                    if current_time >= datetime.time(hour=15):
                         print("it's par 3 Oclk")
                         # Check if a blank row has already been inserted
                         blankrow_inserted = False
@@ -304,7 +304,7 @@ def get_info():
                                 break
 
                     
-                    print("outside")
+                    print(blankrow_inserted)
                     #print(row_inserted) 
                     # If a blank row has not been inserted, insert one
                     if blankrow_inserted == False:
