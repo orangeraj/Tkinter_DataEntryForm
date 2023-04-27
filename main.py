@@ -78,25 +78,29 @@ def get_calc():
     order_details_modak = str(int(modak_quant))
     order_details_poli = str(int(poli_quant))
 
+
     #Get Prices from admin datasheet
     price_filepath = "ADMIN_PRICE.xlsx"
     wb = openpyxl.load_workbook(price_filepath)
     ws = wb.active
-    cell_value = ws.cell(row=1, column =1).value
-    print(cell_value)
+    #cell_value = ws.cell(row=1, column =1).value
+    #print(cell_value)
+
 
     #calculate total price
-    Tiffin_PerPlate = 50
-    Chapati_PerPlate = 10
-    Bhakri_PerPlate = 15
-    Bhaji1_PerPlate = 15
-    Bhaji2_PerPlate = 15
-    Varan_PerPlate = 20
-    Rice_PerPlate = 10
-    Thepla_PerPlate = 10
-    Modak_PerPlate = 10
-    Poli_PerPlate = 10
+    Tiffin_PerPlate = ws.cell(row=2, column =2).value
+    Chapati_PerPlate = ws.cell(row=3, column =2).value
+    Bhakri_PerPlate = ws.cell(row=4, column =2).value
+    Bhaji1_PerPlate = ws.cell(row=5, column =2).value
+    Bhaji2_PerPlate = ws.cell(row=6, column =2).value
+    Varan_PerPlate = ws.cell(row=7, column =2).value
+    Rice_PerPlate = ws.cell(row=8, column =2).value
+    Thepla_PerPlate = ws.cell(row=9, column =2).value
+    Modak_PerPlate = ws.cell(row=10, column =2).value
+    Poli_PerPlate = ws.cell(row=11, column =2).value
     
+    
+
     #reset to zero for next calculation
     calc_price = 0.0
     price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price,font=("Roboto", 20, "bold"), width=7)
@@ -127,6 +131,7 @@ def get_calc():
     price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price, font=("Roboto", 20, "bold"), width=7)
     price_entry.grid(row=1,column=2)
 
+    wb.save(price_filepath)
     return list1
 
 
