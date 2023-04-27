@@ -66,13 +66,13 @@ def get_calc():
     bhaji2_type = bhaji2_entry.get()
 
     #concatenating values for order details 
-    order_details = (str(int(tiffin_quant)) + " Tiffin" + " | \n" + 
-                     str(int(chapati_quant)) + " Chapati" + " | \n" + 
-                     str(int(bhakari_quant)) + " " + str(bhakri_type) + " Bhakri" + " " + " | \n" +  
-                     str(int(bhaji1_quant)) + " " + str(bhaji1_type) + " Bhaji 1" + " " + " | \n" + 
-                     str(int(bhaji2_quant)) + " " + str(bhaji2_type) + " Bhaji 2" + " " + " | \n" + 
-                     str(int(varan_quant)) + " Varan" + " | \n" + 
-                     str(int(rice_quant)) + " Rice" + " | \n" )
+    order_details = (str(tiffin_quant) + " Tiffin" + " | \n" + 
+                     str(chapati_quant) + " Chapati" + " | \n" + 
+                     str(bhakari_quant) + " " + str(bhakri_type) + " Bhakri" + " " + " | \n" +  
+                     str(bhaji1_quant) + " " + str(bhaji1_type) + " Bhaji 1" + " " + " | \n" + 
+                     str(bhaji2_quant) + " " + str(bhaji2_type) + " Bhaji 2" + " " + " | \n" + 
+                     str(varan_quant) + " Varan" + " | \n" + 
+                     str(rice_quant) + " Rice" + " | \n" )
 
     order_details_thepla = str(int(thepla_quant))
     order_details_modak = str(int(modak_quant))
@@ -88,6 +88,7 @@ def get_calc():
 
 
     #calculate total price
+    
     Tiffin_PerPlate = ws.cell(row=2, column =2).value
     Chapati_PerPlate = ws.cell(row=3, column =2).value
     Bhakri_PerPlate = ws.cell(row=4, column =2).value
