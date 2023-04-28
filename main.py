@@ -10,6 +10,7 @@ from openpyxl.styles import PatternFill
 from openpyxl.styles import Font
 from openpyxl import Workbook, load_workbook
 
+
 #global variables
 custname = ''
 deliverytime = ''
@@ -19,9 +20,9 @@ paidstatus = ''
 calc_price = 0
 global calc_count
 calc_count  = 0
-#row_inserted = False
-#print("global", calc_count)
-#function to calculate total price
+
+
+#Function to calculate Price and get details from GUI
 def get_calc():
     
     #get details from GUI fields
@@ -35,11 +36,7 @@ def get_calc():
     halfbhaji2 = halfbhaji2_var.get()
     halfvaran = halfvaran_var.get()
     halfrice = halfrice_var.get()
-
-    #print(halftiffin, halfbhaji1, halfbhaji2, halfvaran, halfrice)
-    #print("paid status", paidstatus)
-
-
+    remarks = remark_entry.get("1.0", "end-1c")
 
     tiffin_quant = tiffin_spinbox.get()
     tiffin_quant = float(tiffin_quant)
@@ -96,10 +93,6 @@ def get_calc():
 
         wb = openpyxl.load_workbook(price_filepath)
         ws = wb.active
-        #cell_value = ws.cell(row=1, column =1).value
-        #print(cell_value)
-        #calculate total price
-        #consider half checkbox
 
         if halftiffin == 'Half':
             Tiffin_PerPlate = ws.cell(row=2, column =3).value
@@ -138,8 +131,6 @@ def get_calc():
         Poli_PerPlate = ws.cell(row=11, column =2).value
     
 
-        #print(Tiffin_PerPlate, Bhaji1_PerPlate, Bhaji2_PerPlate, Varan_PerPlate, Rice_PerPlate)
-
         #reset to zero for next calculation
         calc_price = 0.0
         price_entry = tkinter.Label(order_detail_frame, textvariable=calc_price,font=("Roboto", 20, "bold"), width=7)
@@ -157,13 +148,14 @@ def get_calc():
                         (modak_quant * float(Modak_PerPlate)) + \
                         (poli_quant * float(Poli_PerPlate))
         
-        #creating list to return to get_info function
-        #global calc_count 
+        
         global calc_count
         calc_count += 1
-        #print("inside calc ",calc_count)
+
+
         list1 = [order_details, calc_price, order_details_thepla, order_details_modak, order_details_poli, custname, ordertype, calc_count,
-                paidstatus, deliverytime, deliveryperson]
+                paidstatus, deliverytime, deliveryperson, remarks]
+
 
         #displaying calcuated value on GUI
         calc_price = tkinter.StringVar(value = calc_price)
@@ -177,9 +169,9 @@ def get_calc():
     return list1
 
 
+#Function to clean screen after submit button is pressed
 def Clear_Window():
 
-    #clean window after submit button is clicked
 
     cust_name_entry.delete(0,tkinter.END)
     deliverytime_entry.delete(0,tkinter.END)
@@ -199,6 +191,8 @@ def Clear_Window():
     halfbhaji2_check.deselect()
     halfvaran_check.deselect()
     halfrice_check.deselect()
+
+    remark_entry.delete("1.0", "end")
 
     reset_v = IntVar(window)
     reset_v.set(0)
@@ -231,14 +225,11 @@ def Clear_Window():
     reset_v9.set(0)
     poli_spinbox.config(textvariable = reset_v9)    
 
-    print("inside clear window")
+
 
 #function to save everything into excel
 def get_info():
 
-    #price = price_entry.get()
-    #price = float(price)
-    #price_f = "{:.2f}".format(price)
 
     #fetching values from get_calc function
     global calc_count
@@ -250,13 +241,11 @@ def get_info():
     paidstatus = list2[8]
     deliverytime = list2[9]
     deliveryperson = list2[10]
-
+    remarks = list2[11]
     blankrow_inserted = None
-    #print(paidornot)
-    #calc_count = list2[7]
-    #print("flag inside info ", calc_count)
+   
     
-    #valition for mandatory fields > custname and ordertype
+    #validate if customer name and order type is menioned or not and also calculated first
     if custname:
         if ordertype:
             if calc_count > 1:    
@@ -272,7 +261,7 @@ def get_info():
                     workbook = openpyxl.Workbook()
                     sheet = workbook.active
                     heading = ["Customer Name", "Delivery Time", "Price", "Order Type", 
-                                "Payment Status", "Delivery Person", "Order Details", "Thepla", "Modak", "Poli"]
+                                "Payment Status", "Delivery Person", "Order Details", "Thepla", "Modak", "Poli", "Comment"]
                     sheet.append(heading)
                     
                     #color the header
@@ -288,14 +277,11 @@ def get_info():
                     sheet = workbook.active
                     
                     #separate morning and evening orders
-                    # Check if the current time is after 2 pm
-                    print("inside get info")
+                    # Check if the current time is after 3 pm
+
                     current_time = datetime.datetime.now().time()
-                    print(current_time)
-                    print(datetime.time(hour=15))
-                    
                     if current_time >= datetime.time(hour=15):
-                        print("it's par 3 Oclk")
+
                         # Check if a blank row has already been inserted
                         blankrow_inserted = False
                         for row in sheet.iter_rows():
@@ -303,28 +289,25 @@ def get_info():
                                 blankrow_inserted = True
                                 break
 
-                    
-                    print(blankrow_inserted)
-                    #print(row_inserted) 
+         
                     # If a blank row has not been inserted, insert one
-                    if blankrow_inserted == False:
-                        blank_list = []
-                        print("blank row inserted")
-                        sheet.append(blank_list)
-                        sheet.append(blank_list)
-                        #print("blank row inserted")
-                    
+                        if blankrow_inserted == False:
+                            blank_list = []
+                            print("blank row inserted")
+                            sheet.append(blank_list)
+                            sheet.append(blank_list)
+                            #print("blank row inserted")
+                        
                     if not deliverytime:
                         deliverytime = current_time.strftime('%I:%M %p')
 
-                    sheet.append([custname, deliverytime, str(price_dec), ordertype, paidstatus, deliveryperson, orderdetails, list2[2], list2[3], list2[4]])
+                    sheet.append([custname, deliverytime, str(price_dec), ordertype, paidstatus, deliveryperson, orderdetails, list2[2], list2[3], list2[4], remarks])
                     
-                    #highlight paid transactions
-                    #bold_font = Font(bold=True)
+                    
                     fill = PatternFill(start_color='90EE90', end_color='90EE90', fill_type='solid')
                     
                     for row in sheet.iter_rows(min_row=2): # skip the header row
-                        #print("paidstatus value", row[4].value)
+                    
                         if row[4].value == "Paid": # column 4 is the "paidstatus" column
                             for cell in row:
                                 cell.fill = fill
@@ -333,7 +316,7 @@ def get_info():
                     workbook.save(filepath)
                     #reset counter
                     calc_count = 0
-                    #print("ending", calc_count)
+
                     Clear_Window()
 
                 except:
@@ -347,6 +330,7 @@ def get_info():
 
 
 
+
 #Tkinter GUI code
 
 window = tkinter.Tk()
@@ -356,6 +340,8 @@ frame.pack()
 
 reset_v = IntVar(window)
 reset_v.set(0)
+
+
 
 #frame 01: order details
 order_detail_frame = tkinter.LabelFrame(frame, text="Order Details")
@@ -396,6 +382,7 @@ for widget in order_detail_frame.winfo_children():
     widget.grid_configure(padx=10, pady=5)
 
 
+
 #frame 02: delivery details
 delivey_detail_frame = tkinter.LabelFrame(frame, text="Delivery Details")
 delivey_detail_frame.grid(row=1, column=0, sticky="news", padx=20, pady=20)
@@ -414,6 +401,13 @@ paid_status_var = tkinter.StringVar(value="Not Paid")
 amountpaid_check = tkinter.Checkbutton(delivey_detail_frame, text="Paid", 
                                        variable=paid_status_var, onvalue="Paid", offvalue="Not Paid")
 amountpaid_check.grid(row=1, column=1)
+
+#save comment
+remark_label = tkinter.Label(delivey_detail_frame, text='Comment')
+remark_label.grid(row=0,column=2)
+remark_entry = tkinter.Text(delivey_detail_frame, height=2, width=20)
+remark_entry.grid(row=1,column=2)
+
 
 #adding padding for all the widgets inside frame 
 for widget in delivey_detail_frame.winfo_children():
@@ -480,7 +474,6 @@ poli_spinbox = tkinter.Spinbox(menu_detail_frame, from_=0, to=99)
 poli_spinbox.grid(row=10,column=1)
 
 
-
 #half prices
 type_label = tkinter.Label(menu_detail_frame, text="Half")
 type_label.grid(row=0, column=2)
@@ -504,7 +497,6 @@ halfvaran_check.grid(row=6, column=2)
 halfrice_var = tkinter.StringVar(value="Full")
 halfrice_check = tkinter.Checkbutton(menu_detail_frame, text="", variable=halfrice_var, onvalue="Half", offvalue="Full")
 halfrice_check.grid(row=7, column=2)
-
 
 
 #types of menu
