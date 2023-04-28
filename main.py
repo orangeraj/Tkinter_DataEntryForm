@@ -329,7 +329,20 @@ def get_info():
         tkinter.messagebox.showwarning(title="ERROR !", message="Customer Name missing")
 
 
+'''
+def load_data():
+    path = "C:\\Users\\mhatr\\AkshayPatra_DailyOrders_2023-04-28.xlsx"
+    wb = openpyxl.load_workbook(path)
+    ws = wb.active
 
+    list_values = list(ws.values)
+    print(list_values)
+    for col_name in list_values[0]:
+        treevieww.heading(col_name, text=col_name)
+
+    for value_tuple in list_values[1:]:
+        treevieww.insert('', tkinter.END, values=value_tuple)
+'''
 
 #Tkinter GUI code
 
@@ -520,6 +533,42 @@ for widget in menu_detail_frame.winfo_children():
 #submit button
 button = tkinter.Button(frame, text="Submit", command= get_info)
 button.grid(row=3, column=0, sticky="news", padx=20, pady=20)
+
+
+
+'''#frame 04: History
+
+#history_frame = ttk.Frame(frame)
+history_frame = tkinter.LabelFrame(frame, text="History")
+history_frame.grid(row=0, column=1, padx=20, pady=10)
+historyScroll = ttk.Scrollbar(history_frame)
+historyScroll.pack(side="right", fill='y')
+
+#history_frame.grid_rowconfigure(0, weight=1)
+
+#cols = ("name", "number")
+cols = ("Customer Name", "Delivery Time", "Price",	"Order Type", "Payment Status",	"Delivery Person",	"Order Details", "Thepla", "Modak", "Poli", "Comment") 
+treevieww = ttk.Treeview(history_frame, show="headings",
+                         yscrollcommand=historyScroll.set, columns=cols, height=10)
+
+treevieww.column("Customer Name", width=70)
+treevieww.column("Delivery Time", width=70)
+treevieww.column("Price", width=70)
+treevieww.column("Order Type", width=70)
+treevieww.column("Payment Status", width=70)
+treevieww.column("Delivery Person", width=70)
+treevieww.column("Order Details", width=170)
+treevieww.column("Thepla", width=70)
+treevieww.column("Modak", width=70)
+treevieww.column("Poli", width=70)
+treevieww.column("Comment", width=70)
+
+load_data()
+
+treevieww.pack()
+historyScroll.config(command=treevieww.yview)
+
+'''
 
 #to keep GUI open until close by user
 window.mainloop()
